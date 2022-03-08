@@ -17,17 +17,24 @@ var (
 	rtorrentTorrents   = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "torrents_total"), "Torrent count by view.", []string{"view"}, nil)
 )
 
+// Exporter returns a prometheus.Collector that gathers rTorrent metrics.
 type Exporter struct {
 	Namespace string
 	Client    rtorrent.RTorrent
 	Logger    log.Logger
 }
 
+// Describe sends the super-set of all possible descriptors of metrics
+// collected by this Collector to the provided channel and returns once
+// the last descriptor has been sent.
 func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
 	ch <- rtorrentInfo
 	ch <- rtorrentUp
 }
 
+// Collect is called by the Prometheus registry when collecting
+// metrics. The implementation sends each collected metric via the
+// provided channel and returns once the last metric has been sent.
 func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	up := e.scrape(ch)
 
