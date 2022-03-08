@@ -54,7 +54,6 @@ func main() {
 		<pre><a href='` + *metricsPath + `'>rtorrent exporter</a></pre>`))
 	})
 
-
 	counter := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: prometheus.BuildFQName(namespace, "client", "requests_total"),
@@ -65,13 +64,13 @@ func main() {
 	prometheus.MustRegister(counter)
 
 	conn := rtorrent.New(*rtorrentScrapeURI, *rtorrentSSLVerify).WithHTTPClient(&http.Client{
-		Timeout: *rtorrentTimeout,
+		Timeout:   *rtorrentTimeout,
 		Transport: promhttp.InstrumentRoundTripperCounter(counter, http.DefaultTransport),
 	})
 	e := exporter.Exporter{
 		Namespace: namespace,
-		Client: *conn,
-		Logger: logger,
+		Client:    *conn,
+		Logger:    logger,
 	}
 	prometheus.MustRegister(&e)
 
