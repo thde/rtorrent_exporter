@@ -24,8 +24,8 @@ var (
 	webConfig         = webflag.AddFlags(kingpin.CommandLine)
 	listenAddress     = kingpin.Flag("web.listen-address", "Address to listen on for web interface and telemetry.").Default(":9135").String()
 	metricsPath       = kingpin.Flag("web.telemetry-path", "Path under which to expose metrics.").Default("/metrics").String()
-	rtorrentScrapeURI = kingpin.Flag("rtorrent.scrape-uri", "URI on which to scrape rtorrent.").Default("http://localhost/RPC2").String()
-	rtorrentSSLVerify = kingpin.Flag("rtorrent.ssl-verify", "Flag that enables SSL certificate verification for the scrape URI").Default("true").Bool()
+	rtorrentScrapeURI = kingpin.Flag("rtorrent.scrape-uri", "URI on which to scrape rTorrent. Use http://user:pass@host.com to supply basic auth credentials.").Default("http://localhost/RPC2").String()
+	rtorrentSSLVerify = kingpin.Flag("rtorrent.ssl-verify", "Flag that enables SSL certificate verification for the scrape URI.").Default("true").Bool()
 	rtorrentTimeout   = kingpin.Flag("rtorrent.timeout", "Timeout for trying to get stats from rtorrent.").Default("5s").Duration()
 )
 

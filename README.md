@@ -22,8 +22,8 @@ Flags:
       --web.telemetry-path="/metrics"
                              Path under which to expose metrics.
       --rtorrent.scrape-uri="http://localhost/RPC2"
-                             URI on which to scrape rtorrent.
-      --rtorrent.ssl-verify  Flag that enables SSL certificate verification for the scrape URI
+                             URI on which to scrape rTorrent. Use http://user:pass@host.com to supply basic auth credentials.
+      --rtorrent.ssl-verify  Flag that enables SSL certificate verification for the scrape URI.
       --rtorrent.timeout=5s  Timeout for trying to get stats from rtorrent.
       --log.level=info       Only log messages with the given severity or above. One of: [debug, info, warn, error]
       --log.format=logfmt    Output format of log messages. One of: [logfmt, json]
