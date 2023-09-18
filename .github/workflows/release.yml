@@ -41,7 +41,7 @@ jobs:
       - run: go mod download -x
       - name: Define goreleaser flags
         run: test -n "$(git tag --points-at HEAD)" || echo "GORELEASER_FLAGS=--snapshot" >> $GITHUB_ENV
-      - uses: goreleaser/goreleaser-action@v4
+      - uses: goreleaser/goreleaser-action@v5
         with:
           version: latest
           args: release --clean ${{ env.GORELEASER_FLAGS }}
