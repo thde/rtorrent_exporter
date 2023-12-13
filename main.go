@@ -71,7 +71,10 @@ func run(logger log.Logger) error {
 	}
 	prometheus.MustRegister(&e)
 
-	srv := &http.Server{}
+	srv := &http.Server{
+		ReadTimeout:  *rtorrentTimeout,
+		WriteTimeout: *rtorrentTimeout,
+	}
 	return web.ListenAndServe(srv, webConfig, logger)
 }
 
