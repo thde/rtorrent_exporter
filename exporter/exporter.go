@@ -62,14 +62,14 @@ func (e *Exporter) scrape(ch chan<- prometheus.Metric) (up float64) {
 		return 1
 
 	}
-	ch <- prometheus.MustNewConstMetric(rtorrentDownloaded, prometheus.GaugeValue, float64(downloaded))
+	ch <- prometheus.MustNewConstMetric(rtorrentDownloaded, prometheus.CounterValue, float64(downloaded))
 
 	uploaded, err := e.Client.UpTotal()
 	if err != nil {
 		level.Error(e.Logger).Log("msg", "Can't scrape rTorrent", "err", err)
 		return 1
 	}
-	ch <- prometheus.MustNewConstMetric(rtorrentUploaded, prometheus.GaugeValue, float64(uploaded))
+	ch <- prometheus.MustNewConstMetric(rtorrentUploaded, prometheus.CounterValue, float64(uploaded))
 
 	for name, view := range map[string]rtorrent.View{
 		"main":    rtorrent.ViewMain,
@@ -84,7 +84,7 @@ func (e *Exporter) scrape(ch chan<- prometheus.Metric) (up float64) {
 			return 1
 		}
 
-		ch <- prometheus.MustNewConstMetric(rtorrentTorrents, prometheus.GaugeValue, float64(len(torrents)), name)
+		ch <- prometheus.MustNewConstMetric(rtorrentTorrents, prometheus.CounterValue, float64(len(torrents)), name)
 	}
 
 	return 0
