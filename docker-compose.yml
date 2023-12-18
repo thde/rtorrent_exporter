@@ -1,0 +1,11 @@
+services:
+  exporter:
+    build: .
+    command: ['--rtorrent.scrape-uri=http://rtorrent:8000/RPC2']
+  exporter-scraper:
+    image: cgr.dev/chainguard/busybox:latest
+    command: sh -c 'watch -n 5 wget -qO- exporter:9135/metrics | grep rtorrent_'
+  rtorrent:
+    image: crazymax/rtorrent-rutorrent:latest
+    ports:
+      - 8080
