@@ -14,7 +14,7 @@ var (
 	rtorrentUp         = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "up"), "Was the last scrape of rTorrent successful.", nil, nil)
 	rtorrentDownloaded = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "downloaded_bytes"), "Total downloaded bytes.", nil, nil)
 	rtorrentUploaded   = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "uploaded_bytes"), "Total uploaded bytes.", nil, nil)
-	rtorrentTorrents   = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "torrents_total"), "Torrent count by view.", []string{"view"}, nil)
+	rtorrentTorrents   = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "torrents_total"), "Torrent count by view.", []string{"view", "label"}, nil)
 )
 
 // Exporter returns a prometheus.Collector that gathers rTorrent metrics.
@@ -84,7 +84,14 @@ func (e *Exporter) scrape(ch chan<- prometheus.Metric) (up float64) {
 			return 1
 		}
 
-		ch <- prometheus.MustNewConstMetric(rtorrentTorrents, prometheus.CounterValue, float64(len(torrents)), name)
+		grouped := map[string][]rtorrent.Torrent{}
+		for _, torrent := range torrents {
+			grouped[torrent.Label] = append(grouped[torrent.Label], torrent)
+		}
+
+		for label, torrents := range grouped {
+			ch <- prometheus.MustNewConstMetric(rtorrentTorrents, prometheus.CounterValue, float64(len(torrents)), name, label)
+		}
 	}
 
 	return 0
