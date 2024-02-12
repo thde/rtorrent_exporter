@@ -83,6 +83,10 @@ func (e *Exporter) scrape(ch chan<- prometheus.Metric) (up float64) {
 			level.Error(e.Logger).Log("msg", "Can't scrape rTorrent", "err", err)
 			return 1
 		}
+		if len(torrents) == 0 { // report zero value
+			ch <- prometheus.MustNewConstMetric(rtorrentTorrents, prometheus.CounterValue, 0, name, "")
+			continue
+		}
 
 		grouped := map[string][]rtorrent.Torrent{}
 		for _, torrent := range torrents {
