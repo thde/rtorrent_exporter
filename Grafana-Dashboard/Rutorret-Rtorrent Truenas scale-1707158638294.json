@@ -267,7 +267,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "((rtorrent_torrents_total{view=\"main\"} - on () rtorrent_torrents_total{view=\"seeding\"}) - on () rtorrent_torrents_total{view=\"stopped\"})",
+          "expr": "(((sum by(namespace) (rtorrent_torrents_total{view=\"main\"})) - on () (sum by(namespace) (rtorrent_torrents_total{view=\"seeding\"}))) - on () (sum by(namespace) (rtorrent_torrents_total{view=\"stopped\"})))",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -606,7 +606,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "(sum by(namespace) (irate(rtorrent_downloaded_bytes[20s]) / (1024 * 1024)))",
+          "expr": "(sum by(namespace) (irate(rtorrent_downloaded_bytes[29s]) / (1024 * 1024)))",
           "hide": false,
           "instant": false,
           "legendFormat": "__auto",
@@ -1275,13 +1275,13 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Rutorret-Rtorrent Truenas scale",
   "uid": "bf6ed7de-7a41-41eb-9a37-724ecffcf7c5",
-  "version": 83,
+  "version": 84,
   "weekStart": ""
 }
