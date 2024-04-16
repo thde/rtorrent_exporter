@@ -9,6 +9,7 @@ import (
 	"github.com/go-kit/log/level"
 	"github.com/mrobinsn/go-rtorrent/rtorrent"
 	"github.com/prometheus/client_golang/prometheus"
+	collectorsversion "github.com/prometheus/client_golang/prometheus/collectors/version"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/promlog"
 	logflag "github.com/prometheus/common/promlog/flag"
@@ -37,7 +38,7 @@ func run(logger log.Logger) error {
 	level.Info(logger).Log("msg", "Starting rtorrent_exporter", "version", version.Info())
 	level.Info(logger).Log("build_context", version.BuildContext())
 
-	prometheus.MustRegister(version.NewCollector(name))
+	prometheus.MustRegister(collectorsversion.NewCollector(name))
 
 	http.Handle(*metricsPath, promhttp.Handler())
 	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
