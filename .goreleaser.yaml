@@ -1,3 +1,4 @@
+version: 2
 env:
   - KO_DOCKER_REPO=ghcr.io/{{ .Env.GITHUB_REPOSITORY }}
 before:
