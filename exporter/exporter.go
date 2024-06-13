@@ -12,11 +12,12 @@ const namespace = "rtorrent"
 var (
 	rtorrentInfo            = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "info"), "rtorrent info.", []string{"name", "ip"}, nil)
 	rtorrentUp              = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "up"), "Was the last scrape of rTorrent successful.", nil, nil)
-	rtorrentDownloaded      = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "downloaded_bytes"), "Total downloaded bytes, deprecated", nil, nil)
 	rtorrentDownloadedTotal = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "downloaded_bytes_total"), "Total downloaded bytes", nil, nil)
-	rtorrentUploaded        = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "uploaded_bytes"), "Total uploaded bytes, deprecated", nil, nil)
 	rtorrentUploadedTotal   = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "uploaded_bytes_total"), "Total uploaded bytes", nil, nil)
 	rtorrentTorrents        = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "torrents_total"), "Torrent count by view.", []string{"view", "label"}, nil)
+
+	rtorrentDownloadedDeprecated = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "downloaded_bytes"), "DEPRECATED: use downloaded_bytes_total", nil, nil)
+	rtorrentUploadedDeprecated   = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "uploaded_bytes"), "DEPRECATED: use uploaded_bytes_total", nil, nil)
 )
 
 // Exporter returns a prometheus.Collector that gathers rTorrent metrics.
@@ -64,7 +65,7 @@ func (e *Exporter) scrape(ch chan<- prometheus.Metric) (up float64) {
 		return 1
 
 	}
-	ch <- prometheus.MustNewConstMetric(rtorrentDownloaded, prometheus.CounterValue, float64(downloaded))
+	ch <- prometheus.MustNewConstMetric(rtorrentDownloadedDeprecated, prometheus.CounterValue, float64(downloaded))
 	ch <- prometheus.MustNewConstMetric(rtorrentDownloadedTotal, prometheus.CounterValue, float64(downloaded))
 
 	uploaded, err := e.Client.UpTotal()
@@ -72,7 +73,7 @@ func (e *Exporter) scrape(ch chan<- prometheus.Metric) (up float64) {
 		level.Error(e.Logger).Log("msg", "Can't scrape rTorrent", "err", err)
 		return 1
 	}
-	ch <- prometheus.MustNewConstMetric(rtorrentUploaded, prometheus.CounterValue, float64(uploaded))
+	ch <- prometheus.MustNewConstMetric(rtorrentUploadedDeprecated, prometheus.CounterValue, float64(uploaded))
 	ch <- prometheus.MustNewConstMetric(rtorrentUploadedTotal, prometheus.CounterValue, float64(uploaded))
 
 	for name, view := range map[string]rtorrent.View{
