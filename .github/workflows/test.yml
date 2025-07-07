@@ -49,7 +49,7 @@ jobs:
       - run: go mod download -x
       - run: go mod tidy && git diff --exit-code go.mod go.sum
       - run: go vet ./...
-      - uses: dominikh/staticcheck-action@v1.3.1
+      - uses: dominikh/staticcheck-action@v1.4.0
         with:
           install-go: false
       - uses: golangci/golangci-lint-action@v6
