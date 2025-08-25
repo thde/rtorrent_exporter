@@ -19,7 +19,7 @@ jobs:
       - uses: WillAbides/setup-go-faster@v1.14.0
         with:
           go-version: stable
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
       - uses: actions/cache@v4
@@ -37,7 +37,7 @@ jobs:
       - uses: WillAbides/setup-go-faster@v1.14.0
         with:
           go-version: stable
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 1
       - uses: actions/cache@v4
