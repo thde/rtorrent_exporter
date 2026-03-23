@@ -16,7 +16,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: WillAbides/setup-go-faster@v1.14.0
+      - uses: WillAbides/setup-go-faster@v1.15.0
         with:
           go-version: stable
       - uses: actions/checkout@v6
@@ -34,7 +34,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: WillAbides/setup-go-faster@v1.14.0
+      - uses: WillAbides/setup-go-faster@v1.15.0
         with:
           go-version: stable
       - uses: actions/checkout@v6
